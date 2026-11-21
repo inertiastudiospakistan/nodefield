@@ -50,3 +50,11 @@
 - **Code:** https://github.com/inertiastudiospakistan/nodefield (public, `main`, 54 files, Apache-2.0). `gh` CLI on this machine is authorised as inertiastudiospakistan (device flow); `gh auth setup-git` configured.
 - **Database:** Supabase project `nodefield` (free, Singapore ap-southeast-1, Nano), https://wixdniuqdvridwnpsiio.supabase.co — tables providers, developers, api_keys, jobs created and verified in Table Editor. No RLS policies yet (decided at API wiring time).
 - **Not yet done:** API is NOT yet wired to Supabase (waitlist still uses local SQLite demo); no live GPU workers; no real model serving; no benchmarks; no custom domain; no Discord/social accounts.
+
+## Supabase wiring (21 Nov 2026, 22:04 PKT)
+
+- Live waitlist form now writes straight to Supabase when the local backend is unreachable (frontend/assets/app.js: submitToSupabase, return=minimal). Verified live: POST to /rest/v1/providers returned HTTP 201.
+- RLS enabled on all 4 tables; anon INSERT-only policies on providers/developers; GRANT INSERT TO anon on both tables. SELECT deliberately NOT granted to anon — waitlist emails must not be readable by visitors (a return=representation test correctly fails with 42501).
+- Publishable anon key is embedded in app.js (by design — it can only insert waitlist rows). Service_role key was never copied or used.
+- CLEANUP: one test row sits in providers (name "VERIFY TEST — delete me", email verify-test@nodefield.example) from the live verification. Delete it in the Supabase Table Editor.
+- Still not done: no live GPU workers; no real model serving; no benchmarks; no custom domain; no Discord.
