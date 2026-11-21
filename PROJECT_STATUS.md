@@ -43,3 +43,10 @@
 3. **Founder creates accounts:** GitHub repo (public), Cloudflare (Pages), Supabase (free tier) — then apply `infra/supabase_schema.sql` and deploy the frontend per `infra/DEPLOY.md`.
 4. **Trademark/domain check on "Nodefield"** and confirm or replace the provisional name before any public launch material is published.
 5. **Create the Discord server** from `marketing/DISCORD.md` and publish the first honest dev update (Phase 1 progress, no fake numbers).
+
+## Live deployment (21 Nov 2026)
+
+- **Site:** https://nodefield-css.pages.dev/ (Cloudflare Pages, free, project `nodefield`, connected to GitHub repo, root `frontend`, no build step). Verified live: homepage 200 with exact headline; pricing/register/status/models/docs/dashboard all 200.
+- **Code:** https://github.com/inertiastudiospakistan/nodefield (public, `main`, 54 files, Apache-2.0). `gh` CLI on this machine is authorised as inertiastudiospakistan (device flow); `gh auth setup-git` configured.
+- **Database:** Supabase project `nodefield` (free, Singapore ap-southeast-1, Nano), https://wixdniuqdvridwnpsiio.supabase.co — tables providers, developers, api_keys, jobs created and verified in Table Editor. No RLS policies yet (decided at API wiring time).
+- **Not yet done:** API is NOT yet wired to Supabase (waitlist still uses local SQLite demo); no live GPU workers; no real model serving; no benchmarks; no custom domain; no Discord/social accounts.
