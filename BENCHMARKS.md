@@ -50,6 +50,20 @@ Output: one JSON file per run with all metrics above, plus a summary row appende
 | Date | Hardware | Model | Quant | Prompt set | Tokens/sec | TTFT (ms) | Total (ms) | VRAM (GB) | GPU util % | Cost / 1M out tokens | Evidence |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | 2026-11-21 | Tesla T4 (15,360 MiB), Google Colab free | Qwen3-8B | Q4_K_M | 5 fixed prompts, 128 max tokens, temp 0 | **35.27** (mean of 5) | **156** (mean) | ~3,600 (mean) | 5.2 | not measured | not measured | `backend/benchmarks/results/2026-11-21-qwen3-8b-t4-colab.json` |
+| 2026-11-21 | **No GPU — dev VM CPU only** (4 vCPU visible, 1.5 vCPU quota, 7.7 GB RAM) | Qwen3-4B | Q4_K_M | 1 API request, 128 max tokens, temp 0 | **6.44** (decode phase) | **5,744** | 15,700 | ~2.6 (model file, mmap) | n/a (CPU) | not measured | `backend/benchmarks/results/2026-11-21-qwen3-4b-cpu-local.json` |
+
+### Run 2 — first REAL end-to-end API request, Qwen3-4B Q4_K_M on CPU (21 Nov 2026, 18:48 UTC)
+
+- **Path:** `POST /v1/chat/completions` → job queue (SQLite) → `agent/worker.py` polls, claims, runs llama.cpp → `POST /api/jobs/<id>/result` → API returns the real reply with `"nodefield": {"source": "real", "job_id": 3, "worker_id": "local-cpu-1", "tokens_per_second": 6.44, "ttft_ms": 5744.2}`. Job 3 in the API database records model, prompt, status, worker, timing, token counts and `result_source: "real"`.
+- **Request:** "Explain photosynthesis in two sentences.", max_tokens 128, temp 0. **Reply (real model output, 64 tokens):** "Photosynthesis is the process by which plants, algae, and some bacteria convert light energy, usually from the sun, into chemical energy in the form of glucose, using carbon dioxide and water. This process occurs in the chloroplasts of plant cells and is essential for producing oxygen and forming the basis of most food chains."
+- **Runtime:** llama-cpp-python 0.3.37 (built from source — no prebuilt wheel was used for this Python/platform), worker `n_threads=2`, `n_ctx=1024`, `n_gpu_layers=0`. Model load 11.5 s (warm page cache; 27.9 s cold). Model file sha256 `7485fe6f…fdf5`, 2,497,280,256 bytes.
+- **Measured:** prompt 33 tokens (tokenizer-counted, includes the empty `<think></think>` block the worker adds for Qwen3 to disable reasoning output), completion 64 tokens, TTFT 5,744 ms, **6.44 tok/s** (decode phase: completion tokens ÷ (total − TTFT)), job total 15.7 s, curl wall time 16.3 s.
+- **Caveats, stated plainly:**
+  - Single request, not the 5-prompt set and not a 3-run median.
+  - CPU-only and slow: 6.44 tok/s is usable for a demo but far below the T4's 35.27 tok/s. The bottleneck is the 1.5 vCPU quota on this VM, not the model.
+  - An earlier run the same evening with the default `n_threads=4` managed only **1.41 tok/s** (TTFT 8.3 s) and the reply contained a `<think>` reasoning block, because the worker's first ChatML prompt did not suppress Qwen3 thinking. Both fixes are in the worker now (2 threads, empty think block for Qwen3). The 1.41 number is real and is kept here, not hidden.
+  - Demo fallback verified with the worker stopped: the same request returns the unchanged demo reply (no `nodefield` field). Streaming verified with a real worker: SSE chunks + `[DONE]`.
+  - GPU utilisation, power draw and cost per 1M tokens were **not measured**.
 
 ### Run 1 — Qwen3-8B Q4_K_M on Colab T4 (21 Nov 2026, 18:00 UTC)
 

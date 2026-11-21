@@ -48,7 +48,7 @@ A separate **pricing engine** consumes measured cost data (tokens/sec, electrici
 | Frontend | Static HTML/CSS/JS, no build step | Built (14 pages) |
 | API gateway | Python stdlib prototype → FastAPI in production | Prototype (demo responses only) |
 | Scheduler | Python stdlib prototype | Skeleton |
-| Worker agent | Tauri + Python-based agent; llama.cpp / vLLM runtime | Prototype (detection + dashboard UI) |
+| Worker agent | Tauri + Python-based agent; llama.cpp / vLLM runtime | **Working prototype (21 Nov 2026):** `agent/worker.py` polls the API job queue, runs a real GGUF model via llama-cpp-python on CPU or GPU, and posts results back. First real end-to-end request served locally on CPU (Qwen3-4B). See `docs/WORKER.md`. |
 | Waitlist DB | Supabase Postgres (free tier) | Schema written, not created |
 | Pricing engine | Python | Prototype, placeholder costs |
 
@@ -100,3 +100,17 @@ Highest score wins. No machine is assigned work it cannot fit.
 - Signed updates, sandbox enforcement beyond process boundaries.
 - Production FastAPI gateway (stdlib prototype only).
 - Supabase database (schema exists, not applied).
+
+## Worker job queue (built 21 Nov 2026)
+
+The inference path is now real, end to end, over plain HTTP + SQLite —
+no extra services. `POST /v1/chat/completions` creates a job in the
+`jobs` table; a worker claims it via `POST /api/workers/claim`, runs
+the model, and reports back via `POST /api/jobs/<id>/result`. The API
+waits up to 150 s for the result and returns it labelled
+`"nodefield": {"source": "real", …}` with measured tok/s and TTFT.
+With no live worker for the requested model the endpoint returns the
+existing clearly-labelled demo reply instead. A claimed job that is
+never finished is re-queued (180 s timeout, 2 retries). Full detail:
+[`docs/WORKER.md`](WORKER.md). First proof: Qwen3-4B on CPU locally —
+see `BENCHMARKS.md`.
