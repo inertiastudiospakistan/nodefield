@@ -1,6 +1,12 @@
 /* Nodefield frontend — shared behaviour. No secrets here. Demo API base: */
 var API_BASE = "http://localhost:8787";
 
+/* Live waitlist database (Supabase). The anon key is publishable by design:
+   it only permits INSERT into the waitlist tables (see the RLS policies);
+   it cannot read, update or delete anything. */
+var SUPABASE_URL = "https://wixdniuqdvridwnpsiio.supabase.co";
+var SUPABASE_ANON_KEY = "sb_publishable_Rq5IdkbMjEi6IPrbvJniXA_IPzhZLRa";
+
 function $(s, r){ return (r||document).querySelector(s); }
 function $all(s, r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); }
 
@@ -61,6 +67,36 @@ function saveLocal(kind, payload){
   } catch(e){ return 0; }
 }
 
+/* Submit a waitlist entry straight to the live Supabase database.
+   Used when the local demo backend is not reachable (e.g. on the live site).
+   Maps form fields to the Supabase table columns. */
+function submitToSupabase(kind, p){
+  if (!SUPABASE_ANON_KEY || SUPABASE_ANON_KEY.indexOf("__SUPABASE") === 0) return Promise.reject(new Error("live database key not configured yet"));
+  var table = kind === "provider" ? "providers" : "developers";
+  var row;
+  if (kind === "provider") {
+    row = { name: p.name, email: p.email, country: p.country || null,
+      gpu_manufacturer: p.gpu_manufacturer || null, gpu_model: p.gpu_model || null,
+      gpu_vram_gb: p.gpu_vram_gb != null ? p.gpu_vram_gb : null,
+      system_ram_gb: p.system_ram_gb != null ? p.system_ram_gb : null,
+      operating_system: p.os || null, internet_connection: p.internet_connection || null,
+      available_hours: p.available_hours || null, beta_interest: !!p.beta_interest };
+  } else {
+    row = { email: p.email, intended_application: p.intended_application || null,
+      expected_monthly_tokens: p.expected_tokens != null ? p.expected_tokens : null,
+      preferred_models: p.preferred_models || null,
+      desired_api_features: p.api_features ? p.api_features.join(", ") : null };
+  }
+  return fetch(SUPABASE_URL + "/rest/v1/" + table, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "apikey": SUPABASE_ANON_KEY,
+      "Authorization": "Bearer " + SUPABASE_ANON_KEY, "Prefer": "return=minimal" },
+    body: JSON.stringify(row)
+  }).then(function(r){
+    if (!r.ok) throw new Error("Supabase returned HTTP " + r.status);
+  });
+}
+
 function initRegister(){
   // Tabs, honouring ?type=provider|developer
   var params = new URLSearchParams(location.search);
@@ -79,17 +115,26 @@ function initRegister(){
       var payload = formData(form); payload.kind = cfg[1];
       var msg = $(cfg[2]);
       showMsg(msg, true, "Sending…");
+      // Try the local demo backend first; on the live site it is not running,
+      // so fall back to writing straight to the live Supabase waitlist.
+      function fallbackToLive(){
+        showMsg(msg, true, "Local backend not reachable — sending to the live waitlist database…");
+        submitToSupabase(cfg[1], payload).then(function(){
+          showMsg(msg, true, "Thank you — your registration was received and stored in the Nodefield waitlist.");
+          form.reset();
+        }).catch(function(err){
+          var n = saveLocal(cfg[1], payload);
+          showMsg(msg, false, "Could not reach the live database either (" + err.message + "). Your entry was saved locally in this browser (" + n + " saved under key nodefield-waitlist) — it has NOT reached a server yet.");
+        });
+      }
       fetch(API_BASE + "/api/waitlist", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       }).then(function(r){ return r.json().then(function(j){ return { ok: r.ok, j: j }; }); })
       .then(function(res){
         if (res.ok) { showMsg(msg, true, "Thank you — your registration was received by the Nodefield demo backend."); form.reset(); }
-        else { var n = saveLocal(cfg[1], payload); showMsg(msg, false, "Backend returned an error (" + (res.j && res.j.detail ? res.j.detail : "unknown") + "). Your entry was saved locally (" + n + " saved in this browser) and will sync when the backend runs."); }
-      }).catch(function(){
-        var n = saveLocal(cfg[1], payload);
-        showMsg(msg, false, "Backend not reachable at " + API_BASE + ". Your entry was saved locally in this browser (" + n + " saved under key nodefield-waitlist) — it has NOT reached a server yet. It will sync when the backend is running.");
-      });
+        else { fallbackToLive(); }
+      }).catch(function(){ fallbackToLive(); });
     });
   });
 }
