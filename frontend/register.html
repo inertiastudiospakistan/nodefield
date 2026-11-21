@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Register — join the Nodefield waitlist — Nodefield</title>
+<meta name="description" content="Join the Nodefield waitlist as a GPU provider or a developer. No payment details, no passwords.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect width="34" height="34" rx="8" fill="#0A1628" stroke="#00C2A8" stroke-width="1.5"/><line x1="10" y1="10" x2="24" y2="10" stroke="#00C2A8" stroke-width="1.5"/><line x1="10" y1="10" x2="10" y2="24" stroke="#00C2A8" stroke-width="1.5"/><line x1="24" y1="10" x2="24" y2="24" stroke="#00C2A8" stroke-width="1.5"/><line x1="10" y1="24" x2="24" y2="24" stroke="#00C2A8" stroke-width="1.5"/><line x1="10" y1="10" x2="24" y2="24" stroke="#F59E0B" stroke-width="1"/><circle cx="10" cy="10" r="3" fill="#00C2A8"/><circle cx="24" cy="10" r="3" fill="#00C2A8"/><circle cx="10" cy="24" r="3" fill="#00C2A8"/><circle cx="24" cy="24" r="3" fill="#00C2A8"/></svg><span>Nodefield<small>Open AI inference marketplace</small></span></a><button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">&#9776; Menu</button><nav class="site-nav" id="siteNav"><a href="index.html">Home</a><a href="providers.html">Providers</a><a href="developers.html">Developers</a><a href="models.html">Models</a><a href="pricing.html">Pricing</a><a href="how-it-works.html">How it works</a><a href="roadmap.html">Roadmap</a><a href="docs.html">Docs</a><a href="community.html">Community</a><a href="faq.html">FAQ</a><a href="status.html">Status</a><a href="dashboard.html">Dashboard</a><a class="cta" href="register.html">Register</a></nav></div></header>
+<main>
+<section class="hero"><div class="container"><h1>Join the waitlist.</h1><p class="lede">Pick your side — provider or developer. We collect only what the form asks for, and we never sell it.</p></div></section><section class="section"><div class="container"><div class="tabs"><button class="tab-btn active" data-tab="provider" type="button">GPU provider</button><button class="tab-btn" data-tab="developer" type="button">Developer</button></div><div class="tab-panel active" id="panel-provider"><h2>GPU contributor registration</h2><p class="muted">No payment details. No passwords for other services. <strong>No earnings are promised.</strong></p><form id="registerProvider">
+<label for="p-name">Name or username</label><input id="p-name" name="name" type="text" required>
+<label for="p-email">Email</label><input id="p-email" name="email" type="email" required>
+<label for="p-country">Country</label><input id="p-country" name="country" type="text" required>
+<label for="p-mfr">GPU manufacturer</label><select id="p-mfr" name="gpu_manufacturer" required><option value="">Select…</option><option>NVIDIA</option><option>AMD</option><option>Other</option></select>
+<label for="p-model">GPU model</label><input id="p-model" name="gpu_model" type="text" placeholder="e.g. RTX 4070" required>
+<label for="p-vram">GPU VRAM (GB)</label><input id="p-vram" name="gpu_vram_gb" type="number" min="1" max="128" step="1" required>
+<label for="p-ram">System RAM (GB)</label><input id="p-ram" name="system_ram_gb" type="number" min="1" max="1024" step="1" required>
+<label for="p-os">Operating system</label><select id="p-os" name="os" required><option value="">Select…</option><option>Windows</option><option>Linux</option><option>macOS</option></select>
+<label for="p-net">Internet connection</label><select id="p-net" name="internet_connection" required><option value="">Select…</option><option>Fibre</option><option>Cable</option><option>DSL</option><option>Other</option></select>
+<label for="p-hours">Available operating hours</label><input id="p-hours" name="available_hours" type="text" placeholder="e.g. Evenings and weekends, UTC+5">
+<div class="checks"><label><input type="checkbox" name="beta_interest" value="true"> I am interested in participating in beta testing</label></div>
+<p style="margin-top:16px"><button class="btn btn-teal" type="submit">Join as a provider</button></p><div class="form-msg" id="providerMsg" role="status"></div></form></div><div class="tab-panel" id="panel-developer"><h2>Developer early access</h2><p class="muted">Request early access to the demo API. API keys are initially issued manually; the dashboard shows demo key management.</p><form id="registerDeveloper">
+<label for="d-email">Email</label><input id="d-email" name="email" type="email" required>
+<label for="d-app">Intended application</label><textarea id="d-app" name="intended_application" placeholder="What will you build with the API?" required></textarea>
+<label for="d-tokens">Expected monthly token usage</label><input id="d-tokens" name="expected_tokens" type="number" min="0" step="1" placeholder="e.g. 1000000">
+<label for="d-models">Preferred models</label><select id="d-models" name="preferred_models" multiple size="5"><option value="qwen3-4b">qwen3-4b</option><option value="qwen3-8b">qwen3-8b</option><option value="qwen3-14b">qwen3-14b</option><option value="llama-3.1-8b">llama-3.1-8b</option><option value="mistral-7b">mistral-7b</option></select>
+<p class="small muted">Hold Ctrl (Cmd on Mac) to select more than one.</p>
+<fieldset><legend>Desired API features</legend><div class="checks">
+<label><input type="checkbox" name="api_features" value="streaming"> Streaming responses</label>
+<label><input type="checkbox" name="api_features" value="batch"> Batch inference</label>
+<label><input type="checkbox" name="api_features" value="embeddings"> Embeddings</label>
+<label><input type="checkbox" name="api_features" value="fine-tuning-interest"> Fine-tuning (interest — not offered yet)</label>
+</div></fieldset>
+<p style="margin-top:16px"><button class="btn btn-teal" type="submit">Request early access</button></p><div class="form-msg" id="developerMsg" role="status"></div></form></div><div class="callout plain" style="margin-top:20px"><strong>How submission works:</strong> the form POSTs JSON to <code class="inline">http://localhost:8787/api/waitlist</code>. If the backend is not running, your entry is saved locally in this browser (localStorage key <code class="inline">nodefield-waitlist</code>) and the message tells you so — it is never silently presented as having reached a server.</div></div></section>
+</main>
+<footer class="site-footer"><div class="container"><div class="footer-grid">
+<div><h3>Nodefield</h3><p>An open marketplace connecting unused computing power with developers who need affordable AI inference. Pre-launch — no live network yet.</p><p><span class="badge badge-demo">DEMO — illustrative only, not real data</span></p></div>
+<div><h3>Product</h3><ul><li><a href="models.html">Models</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="how-it-works.html">How it works</a></li><li><a href="roadmap.html">Roadmap</a></li><li><a href="status.html">Status</a></li></ul></div>
+<div><h3>People</h3><ul><li><a href="providers.html">GPU providers</a></li><li><a href="developers.html">Developers</a></li><li><a href="community.html">Community</a></li><li><a href="faq.html">FAQ</a></li><li><a href="register.html">Register</a></li></ul></div>
+<div><h3>Legal</h3><ul><li><a href="docs.html">Documentation</a></li><li><a href="privacy.html">Privacy policy</a></li><li><a href="terms.html">Terms of service</a></li><li><a href="dashboard.html">Dashboard</a></li></ul></div>
+</div><div class="footer-bottom"><span>&copy; <span id="year">2026</span> Nodefield. Pre-launch project — nothing on this site is a promise of earnings, uptime, or availability.</span><span>Built with plain HTML/CSS/JS. Works offline.</span></div></div></footer>
+<script src="assets/app.js"></script>
+</body></html>

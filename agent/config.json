@@ -1,0 +1,9 @@
+{
+  "max_gpu_percent": 80,
+  "max_vram_gb": 0,
+  "allowed_hours": "00:00-23:59",
+  "paused": false,
+  "worker_id": "local-worker-1",
+  "gpu_model": null,
+  "vram_gb": null
+}

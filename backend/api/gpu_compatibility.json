@@ -1,0 +1,92 @@
+{
+  "A100 40GB": {
+    "max_model": "large (12B-14B)",
+    "notes": "40GB datacentre GPU: large models with headroom.",
+    "status": "compatible",
+    "vram_gb": 40
+  },
+  "GTX 1660 6GB": {
+    "max_model": "small (1B-4B)",
+    "notes": "6GB VRAM and older architecture: small Q4 models only, expect low throughput.",
+    "status": "experimental",
+    "vram_gb": 6
+  },
+  "H100 80GB": {
+    "max_model": "large (12B-14B)",
+    "notes": "80GB datacentre GPU: large models with ample headroom.",
+    "status": "compatible",
+    "vram_gb": 80
+  },
+  "RTX 3060 12GB": {
+    "max_model": "medium (7B-8B)",
+    "notes": "12GB VRAM comfortably hosts 7B-8B Q4 models; 14B is tight.",
+    "status": "compatible",
+    "vram_gb": 12
+  },
+  "RTX 3070 8GB": {
+    "max_model": "small (1B-4B)",
+    "notes": "8GB VRAM: small models only; 7B-8B Q4 is borderline and may OOM.",
+    "status": "experimental",
+    "vram_gb": 8
+  },
+  "RTX 3080 10GB": {
+    "max_model": "small (1B-4B)",
+    "notes": "10GB VRAM: small models comfortably; medium models experimental.",
+    "status": "compatible",
+    "vram_gb": 10
+  },
+  "RTX 3090 24GB": {
+    "max_model": "large (12B-14B)",
+    "notes": "24GB VRAM hosts 12B-14B Q4 models.",
+    "status": "compatible",
+    "vram_gb": 24
+  },
+  "RTX 4060 8GB": {
+    "max_model": "small (1B-4B)",
+    "notes": "8GB VRAM: small models only; 7B-8B Q4 is borderline and may OOM.",
+    "status": "experimental",
+    "vram_gb": 8
+  },
+  "RTX 4070 12GB": {
+    "max_model": "medium (7B-8B)",
+    "notes": "12GB VRAM comfortably hosts 7B-8B Q4 models; 14B is tight.",
+    "status": "compatible",
+    "vram_gb": 12
+  },
+  "RTX 4090 24GB": {
+    "max_model": "large (12B-14B)",
+    "notes": "24GB VRAM hosts 12B-14B Q4 models.",
+    "status": "compatible",
+    "vram_gb": 24
+  },
+  "RTX 5090 32GB": {
+    "max_model": "large (12B-14B)",
+    "notes": "32GB VRAM hosts 12B-14B Q4 models with headroom.",
+    "status": "compatible",
+    "vram_gb": 32
+  },
+  "RX 6700 XT 12GB": {
+    "max_model": "medium (7B-8B)",
+    "notes": "AMD support is experimental in this prototype; ROCm/vulkan path untested here.",
+    "status": "experimental",
+    "vram_gb": 12
+  },
+  "RX 6800 16GB": {
+    "max_model": "medium (7B-8B)",
+    "notes": "AMD support is experimental in this prototype; ROCm/vulkan path untested here.",
+    "status": "experimental",
+    "vram_gb": 16
+  },
+  "RX 7900 XTX 24GB": {
+    "max_model": "large (12B-14B)",
+    "notes": "AMD support is experimental in this prototype; ROCm/vulkan path untested here.",
+    "status": "experimental",
+    "vram_gb": 24
+  },
+  "Tesla T4 16GB": {
+    "max_model": "medium (7B-8B)",
+    "notes": "16GB datacentre GPU: medium models; efficient for inference.",
+    "status": "compatible",
+    "vram_gb": 16
+  }
+}
