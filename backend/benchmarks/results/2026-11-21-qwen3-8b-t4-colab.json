@@ -1,0 +1,53 @@
+{
+  "project": "nodefield",
+  "benchmark": "qwen3-8b-q4_k_m",
+  "gpu": "Tesla T4, 15360 MiB, 5203 MiB",
+  "vram_after_load": "Tesla T4, 15360 MiB, 5203 MiB",
+  "model": "Qwen/Qwen3-8B-GGUF Qwen3-8B-Q4_K_M.gguf",
+  "runtime": "llama-cpp-python (llama.cpp, CUDA)",
+  "date": "2026-11-21 18:00 UTC",
+  "results": [
+    {
+      "prompt": "Explain photosynthesis in two sentences.",
+      "output": "Photosynthesis is the process by which green plants, algae, and some bacteria convert light energy, usually from the sun, into chemical energy stored in glucose. This process occurs primarily in the chloroplasts of plant cells and involves the absorption of carbon dioxide and water, with sunlight as the energy source, to produce glucose and oxygen as byproducts. \n\nWait, I need to make sure the explanation is accurate and concise. Let me check the key components: light energy, chloroplasts, carbon dioxide, water, glucose, oxygen. Yes, that's correct. I should also mention that it's essential for life on Earth. Let me",
+      "ttft_s": 0.439,
+      "total_s": 3.938,
+      "completion_tokens": 128,
+      "tok_per_s": 32.5
+    },
+    {
+      "prompt": "Write a Python function that returns the nth Fibonacci number.",
+      "output": "The function should be efficient for large n (up to 10^18). The function should also be able to handle very large numbers, up to 10^1000000 digits. The function should be able to handle multiple test cases efficiently. The function should be able to handle multiple test cases efficiently. The function should be able to handle multiple test cases efficiently. The function should be able to handle multiple test cases efficiently. The function should be able to handle multiple test cases efficiently. The function should be able to handle multiple test cases efficiently. The function should be able to handle multiple test cases efficiently",
+      "ttft_s": 0.16,
+      "total_s": 3.598,
+      "completion_tokens": 128,
+      "tok_per_s": 35.58
+    },
+    {
+      "prompt": "What is the capital of France and one fact about it?",
+      "output": "Also, can you tell me about the Eiffel Tower, including its height, construction period, and significance? What is the Louvre Museum known for, and what is the most famous artwork there? What is the significance of the Seine River in Paris? What is the history of the Notre-Dame Cathedral? What is the role of the Eiffel Tower in modern times? What is the significance of the Louvre Museum in French history? What is the role of the Seine River in the city's infrastructure? What is the history of the Eiffel Tower's construction? What is the significance of the Notre-Dame",
+      "ttft_s": 0.07,
+      "total_s": 3.53,
+      "completion_tokens": 128,
+      "tok_per_s": 36.26
+    },
+    {
+      "prompt": "Summarise the plot of Hamlet in three sentences.",
+      "output": "The first sentence should be the inciting incident, the second the rising action, and the third the resolution. The inciting incident is the ghost of King Hamlet appearing to his son, Hamlet, and telling him that Claudius, his brother, has murdered him. The rising action includes Hamlet's feigned madness, his interactions with Ophelia, and the play within a play. The resolution is when Hamlet kills Claudius, and the play ends with the deaths of all the main characters.\nThe inciting incident is the ghost of King Hamlet appearing to his son, Hamlet, and telling him that Claudius",
+      "ttft_s": 0.046,
+      "total_s": 3.549,
+      "completion_tokens": 128,
+      "tok_per_s": 36.06
+    },
+    {
+      "prompt": "Give three tips for saving money on groceries.",
+      "output": "1. Plan meals and create a shopping list: Before going to the store, plan your meals for the week and create a detailed shopping list. This helps avoid impulse buys and ensures you only purchase what you need, reducing waste and saving money.\n\n2. Use coupons and discounts: Look for coupons in newspapers, online, or through apps, and check for sales and discounts at your local grocery store. Using these can significantly reduce the cost of your groceries.\n\n3. Buy in bulk and choose store brands: Purchasing items in bulk can save money in the long run, especially for non-perishable items. Additionally, store-brand products",
+      "ttft_s": 0.063,
+      "total_s": 3.562,
+      "completion_tokens": 128,
+      "tok_per_s": 35.94
+    }
+  ],
+  "mean_tok_per_s": 35.27,
+  "mean_ttft_s": 0.156
+}

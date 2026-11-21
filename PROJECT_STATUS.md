@@ -19,8 +19,8 @@
 ## What is NOT done
 
 - **No live GPU workers.** No contributor machine is connected to any coordinator.
-- **No real model serving.** No Qwen, Llama, or Mistral model has been run by Nodefield code. The demo API is a stub.
-- **No benchmarks run.** `BENCHMARKS.md` has an empty results table by design.
+- **No real model serving through the Nodefield API.** A real Qwen3-8B model has been benchmarked on Colab (see above), but not yet served through the API/scheduler.
+- **No benchmarks run through the full methodology.** One single-run benchmark exists; 3-run medians, GPU-util/power/cost measurements still pending.
 - **No Supabase account / database created.** Schema SQL exists in `infra/supabase_schema.sql` but has not been applied anywhere.
 - **No Cloudflare account / Pages deployment.** Frontend is local-only.
 - **No payments.** No billing, no provider payouts, no payment processor. Paid billing is deliberately not activated (see ROADMAP Phase 7 gates).
@@ -50,6 +50,13 @@
 - **Code:** https://github.com/inertiastudiospakistan/nodefield (public, `main`, 54 files, Apache-2.0). `gh` CLI on this machine is authorised as inertiastudiospakistan (device flow); `gh auth setup-git` configured.
 - **Database:** Supabase project `nodefield` (free, Singapore ap-southeast-1, Nano), https://wixdniuqdvridwnpsiio.supabase.co — tables providers, developers, api_keys, jobs created and verified in Table Editor. No RLS policies yet (decided at API wiring time).
 - **Not yet done:** API is NOT yet wired to Supabase (waitlist still uses local SQLite demo); no live GPU workers; no real model serving; no benchmarks; no custom domain; no Discord/social accounts.
+
+## First real benchmark (21 Nov 2026, 23:00 PKT)
+
+- **Qwen3-8B Q4_K_M on a free Colab Tesla T4: 35.27 tokens/sec mean, 156 ms mean time-to-first-token** (5 fixed prompts, 128 tokens each, temp 0, llama.cpp CUDA). Model load 21.7 s, 5.2 GB VRAM of 15.4 GB. Full measured results + raw JSON in `BENCHMARKS.md` and `backend/benchmarks/results/2026-11-21-qwen3-8b-t4-colab.json`.
+- Honest limits: single run (not 3-run median); model file was a Hugging Face cache hit, not a fresh download; throughput only — outputs ramble at fixed 128 tokens, no quality eval; no GPU-util/power/cost measured yet.
+- Kaggle attempt blocked: account AdilMehmoodWarraich created, notebook drafted, but GPU + Internet locked behind phone verification (user-only step). Notebook: https://colab.research.google.com/drive/1mn4d9JBohZmXj3hVeDe6cAGZh34QtCq9
+- Still not done: no live GPU workers; no real model serving through the Nodefield API; no custom domain; no Discord.
 
 ## Supabase wiring (21 Nov 2026, 22:04 PKT)
 

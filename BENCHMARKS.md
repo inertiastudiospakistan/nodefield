@@ -45,11 +45,24 @@ Output: one JSON file per run with all metrics above, plus a summary row appende
 
 ## Results
 
-> **NO RESULTS YET — no benchmarks have been run.** This table is intentionally empty. It will only gain rows from real measured runs with hardware, model, quant, date, and method recorded. Any figure shown anywhere else (marketing, landing page, social posts) that is not in this table is a target or demo figure and must be labelled as such.
+> **First real result recorded 21 Nov 2026** (see row below). All figures are measured, not estimated. One honest caveat: this is a **single run**, not the 3-run median the methodology calls for — treat it as a first data point, not a final number.
 
 | Date | Hardware | Model | Quant | Prompt set | Tokens/sec | TTFT (ms) | Total (ms) | VRAM (GB) | GPU util % | Cost / 1M out tokens | Evidence |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| — | — | — | — | — | — | — | — | — | — | — | — |
+| 2026-11-21 | Tesla T4 (15,360 MiB), Google Colab free | Qwen3-8B | Q4_K_M | 5 fixed prompts, 128 max tokens, temp 0 | **35.27** (mean of 5) | **156** (mean) | ~3,600 (mean) | 5.2 | not measured | not measured | `backend/benchmarks/results/2026-11-21-qwen3-8b-t4-colab.json` |
+
+### Run 1 — Qwen3-8B Q4_K_M on Colab T4 (21 Nov 2026, 18:00 UTC)
+
+- **Runtime:** llama-cpp-python (llama.cpp, CUDA), Python 3.13.16. Model load: 21.7 s. VRAM after load: 5,187 MiB of 15,360 MiB.
+- **Script:** `backend/benchmarks/benchmark_qwen3_8b.py` (run unmodified; two earlier attempts failed on missing CUDA libraries — fixed by adding `/usr/lib64-nvidia` and the pip NVIDIA directories to `LD_LIBRARY_PATH`, no script change).
+- **Per-prompt (all 128 output tokens):** photosynthesis 32.50 tok/s, TTFT 439 ms; Fibonacci 35.58 tok/s, TTFT 160 ms; France capital 36.26 tok/s, TTFT 70 ms; Hamlet 36.06 tok/s, TTFT 46 ms; groceries 35.94 tok/s, TTFT 63 ms.
+- **Caveats, stated plainly:**
+  - The model file was already in the Hugging Face cache on that recycled Colab VM (download took 0.3 s) — that is a cache hit, not a fresh ~5 GB download.
+  - This measures **throughput only, not quality**: at temp 0 with a fixed 128 tokens the outputs ramble and repeat (e.g. the Fibonacci answer loops the same sentence; the France answer drifts into follow-up questions). A quality eval is a separate job.
+  - GPU utilisation, power draw and cost per 1M tokens were **not measured** — those columns stay empty until a run measures them.
+  - Single run, not 3-run median.
+- **What this means:** an 8B model at Q4 fits comfortably on a 15 GB T4 (~5.2 GB used) and generates ~35 tok/s — fast enough for interactive chat on a free-tier GPU. It says nothing yet about cost, reliability, or sustained multi-user serving.
+- **Kaggle note:** the same benchmark was first attempted on Kaggle (account AdilMehmoodWarraich created 21 Nov, notebook drafted) but Kaggle locks GPU + Internet behind phone verification on a new account, so the run moved to Colab. The Kaggle notebook remains as a draft if phone verification is ever completed.
 
 ## Comparison with established providers
 
