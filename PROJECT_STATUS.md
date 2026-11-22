@@ -95,3 +95,19 @@
   free) but Docker/Gradio Spaces now require PRO ($9/month) — not taken, per the
   $0 budget. KNOWN_ISSUES #16 (no public API host) is now resolved.
 - Next: first remote GPU worker serving through this public URL.
+
+## First remote GPU worker through the public API (22 Nov 2026, 21:27 PKT)
+
+- **PASSED.** A free Colab Tesla T4 worker (`colab-t4-remote-1`) served a real
+  request end-to-end through the public Render API — no local API server in the
+  loop, $0 spent. `POST /v1/chat/completions` (qwen3-8b, 64 max tokens) →
+  **28.88 tokens/sec, TTFT 656 ms**, reply id `chatcmpl-real-8955f0ff99f83c96`,
+  `"source": "real"`. Verified afterwards via `GET /api/jobs/1` on the public
+  API (same figures) and `/api/health` showing `gpu_workers_online: 1`.
+- The worker's first heartbeat failed because the Render free instance was
+  asleep; it recovered on its own and the job completed. Model load 20.4 s
+  after a 38 s download. Full numbers in BENCHMARKS.md Run 4 + raw JSON.
+- This is the core product loop proven with a stranger's machine on the other
+  end of the internet: public API + remote GPU + real reply. What is still
+  missing for a real marketplace: a second, persistent worker (Colab VMs are
+  throwaway), a second developer actually using it, and payments.
