@@ -37,6 +37,12 @@ Architecture Decision Records. Each entry: context, decision, consequences. Deci
 
 **Consequences / open items:** Trademark search and domain-availability check are **still required before launch** and before any public branding commitment (logo lock-in, social handles, paid assets). If the check fails, pick from the shortlist above or re-run naming. Do not purchase a domain without founder approval.
 
+**Check performed 22 Nov 2026 (preliminary — NOT a legal clearance):**
+- **Collision found: nodefield.com is a live Finnish technology/design company** ("This is the Nodefield from Finland… insanely great stuff with technology and design", fetched live 22 Nov). Same name, same broad field (technology). That is a real confusion risk for a tech startup, even though they are a partnerships/design studio, not an inference marketplace.
+- **Trademark:** web searches found no exact "NODEFIELD" registration at the USPTO for AI/software — but a web search cannot prove absence. A real check needs USPTO tmsearch (tmsearch.uspto.gov) and, ideally, a lawyer before any filing or paid branding.
+- **Domains (verified via DNS-over-HTTPS, 22 Nov — the dev VM's own resolver answers everything and is useless):** nodefield.com live (Finnish company), nodefield.net and nodefield.xyz resolve; nodefield.ai, nodefield.dev, nodefield.io, nodefield.co, getnodefield.com, nodefieldapp.com show **no A record** — no live site, but that does not prove they are unregistered (a domain can be registered with no DNS). Only a registrar whois lookup settles availability.
+- **Recommendation:** keep Nodefield as the provisional/dev name for now, but treat the Finnish company as a real flag — do not lock the brand into paid assets, and decide before public launch whether to keep the name (with .ai/.dev as the domain) or rename. Do not buy any domain without founder approval.
+
 ## ADR-002 — Stdlib-only Python backend for the prototype
 
 **Context:** The backend prototype must run anywhere with zero setup friction and zero cost, on machines the team doesn't control.
