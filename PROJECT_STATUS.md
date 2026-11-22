@@ -79,3 +79,19 @@
 - Publishable anon key is embedded in app.js (by design — it can only insert waitlist rows). Service_role key was never copied or used.
 - CLEANUP: one test row sits in providers (name "VERIFY TEST — delete me", email verify-test@nodefield.example) from the live verification. Delete it in the Supabase Table Editor.
 - Still not done: no live GPU workers; no real model serving; no benchmarks; no custom domain; no Discord.
+
+## Public API host live (22 Nov 2026, 20:51 PKT)
+
+- **https://nodefield-api.onrender.com** — Render free Web Service `nodefield-api`
+  (service srv-dc1gs69ksfps738se5m0, Oregon, Python, $0/month, no card).
+  `/api/health` verified HTTP 200: `{"status": "ok", "service": "nodefield-api",
+  "mode": "demo", "gpu_workers_online": 0, "version": "0.1.0"}`.
+- Deploys from GitHub `main` on push. First deploy failed: Render's default build
+  command `pip install -r requirements.txt` found no requirements.txt at repo
+  root — fixed by adding a root `requirements.txt` (stdlib-only, commit 0c9dc28)
+  and setting the build command to echo. Caveat: free tier spins down when idle;
+  first request after idle can take ~50 s.
+- Hugging Face account created the same day (username `chadilmehmoodwarraich`,
+  free) but Docker/Gradio Spaces now require PRO ($9/month) — not taken, per the
+  $0 budget. KNOWN_ISSUES #16 (no public API host) is now resolved.
+- Next: first remote GPU worker serving through this public URL.
