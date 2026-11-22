@@ -55,6 +55,16 @@ DEFAULT_API_URL = "http://localhost:8787"
 DEFAULT_MODEL = "qwen3-4b"
 DEFAULT_REPO = "Qwen/Qwen3-4B-GGUF"
 DEFAULT_FILE = "Qwen3-4B-Q4_K_M.gguf"
+
+# --model is a real selector, not just a label: it picks the repo/file
+# the worker downloads and serves. Before this map existed, --model
+# qwen3-8b silently served the 4B model (caught on the first Colab T4
+# run, 22 Nov 2026) — a worker must never serve a different model than
+# the one it claims. Unknown model ids exit with an error instead.
+MODEL_MAP = {
+    "qwen3-4b": ("Qwen/Qwen3-4B-GGUF", "Qwen3-4B-Q4_K_M.gguf"),
+    "qwen3-8b": ("Qwen/Qwen3-8B-GGUF", "Qwen3-8B-Q4_K_M.gguf"),
+}
 HEARTBEAT_SECONDS = 30
 CLAIM_POLL_SECONDS = 2
 MAX_TOKENS_DEFAULT = 256
@@ -407,11 +417,11 @@ def main():
         "NODEFIELD_MODEL_DIR", DEFAULT_MODEL_DIR),
         help="directory holding the GGUF file (default: %(default)s)")
     parser.add_argument("--repo", default=os.environ.get(
-        "NODEFIELD_HF_REPO", DEFAULT_REPO),
-        help="Hugging Face repo for the model (default: %(default)s)")
+        "NODEFIELD_HF_REPO"),
+        help="Hugging Face repo for the model (default: from --model map)")
     parser.add_argument("--file", default=os.environ.get(
-        "NODEFIELD_HF_FILE", DEFAULT_FILE),
-        help="GGUF filename (default: %(default)s)")
+        "NODEFIELD_HF_FILE"),
+        help="GGUF filename (default: from --model map)")
     parser.add_argument("--n-gpu-layers", type=int, default=None,
                         help="layers offloaded to GPU (-1 = all, 0 = CPU only; "
                              "default: -1 when a GPU is detected, else 0)")
@@ -428,6 +438,19 @@ def main():
     parser.add_argument("--no-download", action="store_true",
                         help="fail instead of downloading a missing model file")
     args = parser.parse_args()
+
+    # Resolve repo/file from --model unless both are given explicitly.
+    # An unknown --model id, or only one of --repo/--file, is a hard
+    # error: serving the wrong model is worse than not starting.
+    if args.repo is None and args.file is None:
+        if args.model not in MODEL_MAP:
+            parser.error(
+                "unknown --model %r (known: %s); pass --repo and --file "
+                "explicitly to serve anything else"
+                % (args.model, ", ".join(sorted(MODEL_MAP))))
+        args.repo, args.file = MODEL_MAP[args.model]
+    elif args.repo is None or args.file is None:
+        parser.error("--repo and --file must be given together")
 
     worker = Worker(args)
 

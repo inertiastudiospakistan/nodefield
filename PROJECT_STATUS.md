@@ -24,7 +24,7 @@
 - **No Supabase account / database created.** Schema SQL exists in `infra/supabase_schema.sql` but has not been applied anywhere.
 - **No Cloudflare account / Pages deployment.** Frontend is local-only.
 - **No payments.** No billing, no provider payouts, no payment processor. Paid billing is deliberately not activated (see ROADMAP Phase 7 gates).
-- **No Discord server created.** Structure and guidelines are written in `marketing/DISCORD.md`; the server itself does not exist.
+- **Discord server created 22 Nov 2026:** "Nodefield" (ID 1573941092695679038, https://discord.com/channels/1573941092695679038) — 5 categories, 15 text channels, 8 rules posted in #rules, welcome post in #announcements. Account fully rebranded: username "nodefield", display name "Nodefield", bio set, Nodefield logo avatar. Discord login saved in Secure Vault.
 - **No social accounts created.** No X, Reddit, YouTube, or Product Hunt presence.
 - **No GitHub repository published yet** (repo layout is local).
 - **Name not trademark-checked; domain not checked or purchased** (and must not be purchased without founder approval).
@@ -57,6 +57,13 @@
 - **Proof (job 3):** Qwen3-4B Q4_K_M on this machine's CPU (no GPU, 1.5 vCPU quota) — "Explain photosynthesis in two sentences." → a correct two-sentence answer, 64 tokens, **6.44 tok/s, TTFT 5,744 ms**, 15.7 s job time. Full numbers + raw JSON in `BENCHMARKS.md` and `backend/benchmarks/results/2026-11-21-qwen3-4b-cpu-local.json`. Streaming (`stream: true`) also verified with a real worker (SSE chunks + `[DONE]`).
 - **Honest limits:** CPU-only and slow (6.44 tok/s vs 35.27 on the Colab T4); single request, not a 3-run median; an earlier same-evening run did only 1.41 tok/s with a `<think>` block in the reply — both fixed in the worker (2 threads, empty think block for Qwen3) and recorded in BENCHMARKS.md. llama-cpp-python 0.3.37 had to be built from source (~12 min) — no prebuilt wheel was used. Model file (~2.5 GB) lives in `agent/models/` (gitignored).
 - **GPU-worker path documented** in `docs/WORKER.md` (Colab T4 + free Cloudflare Tunnel; tunnel NOT set up). Still not done: no GPU worker has served through the API yet; no custom domain; no Discord.
+
+## First GPU request through the API (22 Nov 2026, 13:40 PKT)
+
+- **Qwen3-8B Q4_K_M on a free Colab Tesla T4, served through the Nodefield API itself: 31.29 tokens/sec, 650 ms TTFT** (64 tokens, job 1, worker `colab-t4-1`). Streaming verified (SSE + `[DONE]`). Full measured results in `BENCHMARKS.md` (Run 3) + `backend/benchmarks/results/2026-11-22-qwen3-8b-t4-api.json` (transcribed from the run report).
+- API + worker ran on the same Colab VM — no tunnel: Cloudflare quick tunnels and localtunnel both fail from the dev VM (egress filtered). A remote worker over the public internet is still unproven.
+- Bugs: `--model qwen3-8b` silently served the 4B model — FIXED with `MODEL_MAP` in `agent/worker.py` (verified locally). First streaming attempt hung ~4 min with no SSE — OPEN, in KNOWN_ISSUES.md.
+- Still not done: public API host, trademark/domain check, custom domain, first remote (non-Colab) GPU worker.
 
 ## First real benchmark (21 Nov 2026, 23:00 PKT)
 
