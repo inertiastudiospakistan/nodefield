@@ -89,7 +89,9 @@ Prioritise screen recordings and actual product demonstrations over talking-head
 
 ## Hacker News — Show HN draft
 
-> **DRAFT — DO NOT PUBLISH until a genuinely functional prototype exists (a live model answering real requests).**
+> **UPDATED 22 Nov 2026: the draft now lives in `marketing/SHOW_HN.md`
+> (real numbers, remote-worker proof). The draft below is superseded — do
+> not post from here.**
 
 **Title:** Show HN: Nodefield — inference API on idle consumer GPUs
 
