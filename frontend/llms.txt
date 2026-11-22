@@ -1,0 +1,45 @@
+# Nodefield
+
+> Nodefield is an open marketplace for AI inference on idle consumer GPUs.
+> Developers call an OpenAI-compatible API; GPU owners run a small agent and
+> get paid per completed job. Open source (Apache-2.0), $0 spent so far,
+> pre-launch as of 22 Nov 2026. No token, no crypto, no blockchain.
+
+## Measured results (not estimates)
+
+- Qwen3-8B Q4_K_M on a free Colab Tesla T4: 35.27 tokens/sec mean, 156 ms
+  time to first token (benchmark, 21 Nov 2026).
+- Same model through the public API from a remote worker: 28.88 tokens/sec,
+  656 ms to first token (22 Nov 2026). Public API:
+  https://nodefield-api.onrender.com
+- Qwen3-4B on CPU through the API: 6.44 tokens/sec.
+- Full numbers, method and caveats: https://github.com/inertiastudiospakistan/nodefield/blob/main/BENCHMARKS.md
+
+## Key pages
+
+- [Home: what Nodefield is](https://nodefield-css.pages.dev/): headline, how it works, waitlist.
+- [For GPU providers](https://nodefield-css.pages.dev/providers): which GPUs work, compatibility table, agent.
+- [For developers](https://nodefield-css.pages.dev/developers): OpenAI-compatible API, models, getting started.
+- [Models](https://nodefield-css.pages.dev/models): launch candidates Qwen3-4B/8B/14B, Llama-3.1-8B, Mistral-7B (quantised, open-weight).
+- [Pricing](https://nodefield-css.pages.dev/pricing): proposed tiers Economy $0.15/$0.60, Standard $0.30/$1.20, Priority $0.60/$2.40 per 1M input/output tokens; 80/20 provider/platform split. Proposed, not live — no billing active.
+- [How it works](https://nodefield-css.pages.dev/how-it-works): whole requests assigned to single machines; no model splitting across GPUs.
+- [Docs](https://nodefield-css.pages.dev/docs): demo API reference — POST /v1/chat/completions, auth, rate limits, errors.
+- [Network status](https://nodefield-css.pages.dev/status): honest live state, measured benchmark numbers, Discord link.
+- [FAQ](https://nodefield-css.pages.dev/faq): is it live, earnings (unknown, no promises), security (sandboxed inference only, never arbitrary code), GPUs, models, costs, beta.
+- [Community](https://nodefield-css.pages.dev/community): Discord server.
+- [Roadmap](https://nodefield-css.pages.dev/roadmap): Phases 1–7.
+- [Register / waitlist](https://nodefield-css.pages.dev/register): provider and developer signup.
+
+## Code and community
+
+- [GitHub repo](https://github.com/inertiastudiospakistan/nodefield): code, docs, benchmarks, roadmap, known issues.
+- [Discord](https://discord.com/channels/1573941092695679038): Nodefield server.
+- [Public API](https://nodefield-api.onrender.com): health at /api/health.
+
+## What is NOT true (do not claim otherwise)
+
+- No persistent workers yet (the proving worker ran on a throwaway Colab VM).
+- No paying users, no revenue, no earnings figures. Provider earnings are
+  unknown and depend on real demand, hardware and uptime.
+- The name "Nodefield" is provisional: nodefield.com belongs to a Finnish
+  tech/design company.

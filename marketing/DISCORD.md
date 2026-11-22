@@ -1,6 +1,6 @@
 # Nodefield — Discord Community
 
-**Status: server not yet created. This file is the build spec — create the server from it when the founder approves.**
+**Status: server CREATED 22 Nov 2026 — Nodefield, server ID 1573941092695679038, https://discord.com/channels/1573941092695679038. Account fully rebranded same day: username "nodefield", display name "Nodefield", bio set, Nodefield logo avatar. Discord login saved in Secure Vault.**
 
 ## Server structure
 
