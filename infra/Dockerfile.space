@@ -1,0 +1,28 @@
+# Nodefield API — Hugging Face Space (Docker, free CPU tier)
+#
+# This file is the Space's Dockerfile. The Space is created in the
+# Hugging Face web UI (SDK: Docker, hardware: free CPU, visibility:
+# public) and this file is added there — it clones the public repo at
+# build time, so the Space tracks the repo's main branch as of its
+# last build. Rebuild the Space (Factory reboot) after pushing API
+# changes to pick them up.
+#
+# NOTE: this is a DEMO coordinator. The API has key auth on
+# /v1/chat/completions, but the worker claim/result endpoints are
+# unauthenticated by design in the prototype — anyone who finds the
+# Space URL can submit jobs. Do not put real keys or paid workloads
+# behind it. Production needs TLS + auth on the coordinator.
+
+FROM python:3.12-slim
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends git \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+RUN git clone https://github.com/inertiastudiospakistan/nodefield.git .
+
+EXPOSE 7860
+
+CMD ["sh", "-c", "python3 backend/api/server.py --port ${PORT:-7860}"]
